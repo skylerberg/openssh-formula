@@ -13,6 +13,13 @@ sshd_config:
     - watch_in:
       - service: openssh
 
+ssh_config:
+  file.managed:
+    - name: /etc/ssh/ssh_config
+    - source: salt://openssh/files/ssh_config
+    - user: root
+    - mode: 644
+
 {% for keyType in ['ecdsa', 'dsa', 'rsa'] %}
 {% if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
 ssh_generate_host_{{ keyType }}_key:
